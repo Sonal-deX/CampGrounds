@@ -1,0 +1,38 @@
+<!-- include header -->
+<%- include('../include/header.ejs') %>
+    <!-- include header -->
+
+    <div class="container-fluid ">
+        <div class="text-center mb-4">
+            <h1 class="display-2">All Campgrounds</h1>
+        </div>
+        <div class="row mx-0 mx-sm-0 mx-md-1 mx-lg-0 mx-xxl-5">
+            <% for(let campground of campgrounds){%>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xxl-3">
+                    <div class="card text-center p-0 my-3">
+                        <img src="<%= campground.img %> " class="card-img-top" alt="" srcset="">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= campground.title %>
+                            </h5>
+                            <p class="card-text">
+                                <%= campground.description %>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <%= campground.location %>
+                                </small>
+                            </p>
+                            <a href="/campgrounds/<%= campground._id %>" class="btn btn-primary text-white">View
+                                <%= campground.title %>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+        </div>
+    </div>
+
+    <!-- include footer -->
+    <%- include('../include/footer.ejs') %>
+        <!-- include footer -->

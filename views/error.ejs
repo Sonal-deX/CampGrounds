@@ -1,0 +1,22 @@
+<!-- include header -->
+<%- include('./include/header.ejs') %>
+    <!-- include header -->
+
+    <div class="row justify-content-center">
+        <div class="container col-4 text-center">
+            <div class="card">
+                <% if(errCode){ %>
+                    <h1 class="display-1 text-danger">
+                        <%= errCode %>
+                    </h1>
+                    <% } %>
+                        <h4>
+                            <%= err.message %>
+                        </h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- include footer -->
+    <%- include('./include/footer.ejs') %>
+        <!-- include footer -->

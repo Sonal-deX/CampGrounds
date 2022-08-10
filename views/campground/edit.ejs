@@ -1,0 +1,94 @@
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="p-2 pb-0 d-flex justify-content-end">
+                <button type="button" class="btn-close opacity-100 " data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <h1 class="text-center">Edit Campground</h1>
+                    <form action="/campgrounds/<%=campground._id%>/edit" method="POST" novalidate
+                        class="validated-form">
+                        <div class="mb-3">
+                            <label class="form-label" for="title">Title</label>
+                            <input class="form-control" type="text" id="title" name="campground[title]" required
+                                value="<%=campground.title %>">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please insert the title
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="location">Location</label>
+                            <input class="form-control" type="text" id="location" name="campground[location]" required
+                                value="<%=campground.location %>">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please insert the Location
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="location">State</label>
+                            <input class="form-control" type="text" id="location" name="campground[state]" required
+                                value="<%=campground.state %>">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please insert the state
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="image">Image Url</label>
+                            <input class="form-control" type="text" id="image" name="campground[img]" required
+                                value="<%=campground.img %>">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please insert the image
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="price">Campground Price</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="price-label">$</span>
+                                <input type="number" class="form-control" id="price" placeholder="0.00"
+                                    aria-label="price" aria-describedby="price-label" name="campground[price]" required
+                                    value="<%=campground.price %>">
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please insert the price
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="description">Description</label>
+                            <textarea class="form-control" type="text" id="description" name="campground[description]"
+                                required><%= campground.description%></textarea>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please insert the description
+                            </div>
+                        </div>
+                        <div class=" mb-3 ">
+                            <button class="btn btn-info">Update Campground</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
