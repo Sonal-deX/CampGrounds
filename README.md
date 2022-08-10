@@ -1,4 +1,4 @@
-# Udemy-Cource---Final-Project
+# Udemy-Course---Final-Project
 Hi there, I'm Sonal Attanayake
 
 This is final project on udemy The Web Developer Bootcamp 2022 conducted by colt Steele.
