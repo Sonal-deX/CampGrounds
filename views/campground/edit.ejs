@@ -9,7 +9,7 @@
             <div class="modal-body pt-0">
                 <div class="row">
                     <h1 class="text-center">Edit Campground</h1>
-                    <form action="/campgrounds/<%=campground._id%>/edit" method="POST" novalidate
+                    <form action="/campgrounds/<%=campground._id%>/edit" enctype="multipart/form-data" method="POST" novalidate
                         class="validated-form">
                         <div class="mb-3">
                             <label class="form-label" for="title">Title</label>
@@ -45,18 +45,11 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="image">Image Url</label>
-                            <input class="form-control" type="text" id="image" name="campground[img]" required
-                                value="<%=campground.img %>">
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please insert the image
-                            </div>
+                            <label class="form-label" for="image">Image/Images</label>
+                            <input type="file" class="form-control" id="image" name="campground[img]" multiple required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="price">Campground Price</label>
+                            <label class="form-label" for="price">Price</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="price-label">$</span>
                                 <input type="number" class="form-control" id="price" placeholder="0.00"

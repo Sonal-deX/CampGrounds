@@ -8,6 +8,7 @@ exports.newEJSroute = (req, res) => {
 // Make a request to createAPI/campground
 exports.createCampground = (req, res) => {
     const newObj = req.body.campground
+    const newArray = req.files
     const reqUser = req.user
     axios({
         method: 'post',
@@ -15,6 +16,7 @@ exports.createCampground = (req, res) => {
         headers: {},
         data: {
             newObj,
+            newArray,
             reqUser // This is the body part
         }
     })
@@ -55,6 +57,7 @@ exports.campground = (req, res) => {
 // make a request to updateAPI/campground
 exports.updateCampground = (req, res) => {
     const id = req.params.campid
+    const newArray = req.files
     const reqUser = req.user
     const updateObj = req.body.campground
     delete updateObj.id
@@ -64,6 +67,7 @@ exports.updateCampground = (req, res) => {
         headers: {},
         data: {
             updateObj,
+            newArray,
             reqUser // This is the body part
         }
     })

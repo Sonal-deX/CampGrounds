@@ -5,7 +5,7 @@
     <div class="row justify-content-center mx-2 mx-sm-0">
         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <h1 class="text-center">New Campground</h1>
-            <form action="/campgrounds/new" method="POST" id="add_campground" novalidate class="validated-form">
+            <form action="/campgrounds/new" method="POST" enctype="multipart/form-data" id="add_campground" novalidate class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="title">Title</label>
                     <input class="form-control" type="text" id="title" name="campground[title]" required>
@@ -37,6 +37,11 @@
                     </div>
                 </div>
                 <div class="mb-3">
+                    <label class="form-label" for="image">Image/Images</label>
+                    <input type="file" class="form-control" id="image" name="campground[img]" multiple required>
+                    <small class="text-danger">Note:Your First Image will be appear at the main wall  </small>
+                </div>
+                <!-- <div class="mb-3">
                     <label class="form-label" for="image">Image Url</label>
                     <input class="form-control" type="text" id="image" name="campground[img]" required>
                     <div class="valid-feedback">
@@ -45,9 +50,9 @@
                     <div class="invalid-feedback">
                         Please insert a image
                     </div>
-                </div>
+                </div> -->
                 <div class="mb-3">
-                    <label class="form-label" for="price">Campground Price</label>
+                    <label class="form-label" for="price">Price</label>
                     <div class="input-group">
                         <span class="input-group-text" id="price-label">$</span>
                         <input type="number" class="form-control" id="price" placeholder="0.00" aria-label="price"

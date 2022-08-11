@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const session = require('express-session')
 const flash = require('connect-flash')
-const dotenv = require('dotenv')
 const path = require('path')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
@@ -13,9 +12,11 @@ const localStrategy = require('passport-local')
 const User = require('./server/model/user')
 const connectdb = require('./server/database/connection')
 
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 
-// database path config
-dotenv.config({ path: 'config.env' })
+
 const PORT = process.env.PORT || 3000
 
 // log requests

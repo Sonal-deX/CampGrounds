@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const Campground = require('../server/model/campground')
 const cities = require('./cities')
 const { places, descriptors } = require('./seedHelpers')
+const dotenv = require('dotenv')
+
+dotenv.config()
 
 mongoose.connect('mongodb://localhost:27017/campSite', {
     useNewUrlParser: true,
@@ -21,13 +24,18 @@ const seeddb = async () => {
         const random1000 = Math.floor(Math.random() * 1000)
         const price = Math.floor(Math.random() * 20) + 10
         const camp = new Campground({
-            author:'62ca61ae32b80407a4eb10f5',
+            author: '62ca61ae32b80407a4eb10f5',
             location: `${cities[random1000].city}`,
-            img: 'http://source.unsplash.com/collection/483251',
             state: `${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio, ad in eum numquam laborum ab sequi modi possimus vero quaerat magnam ipsa debitis cum beatae atque ut delectus tempore iure?',
-            price
+            price,
+            img: [
+                {
+                    url: 'https://res.cloudinary.com/dujxnzkly/image/upload/v1660149753/YelpCamp/or6qje13uhofbcxlzyjp.jpg',
+                    filename: 'YelpCamp/or6qje13uhofbcxlzyjp',
+                }
+            ]
         })
         await camp.save()
     }

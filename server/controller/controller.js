@@ -26,15 +26,20 @@ exports.findCampgroundById = catchAsync(async (req, res) => {
 
 exports.createCampground = catchAsync(async (req, res) => {
     const campground = new Campground(req.body.newObj)
+    campground.img = req.body.newArray.map(f => ({url:f.path , filename:f.filename}))
     campground.author = req.body.reqUser._id
     const respond = await campground.save()
+    console.log(campground);
     res.send(respond)
 })
 
 exports.updateCampground = catchAsync(async (req, res) => {
     const id = req.params.id
     const camp = await Campground.findByIdAndUpdate(id, { ...req.body.updateObj })
-    return res.send(camp)
+    const imgs = req.body.newArray.map(f => ({url:f.path , filename:f.filename}))
+    camp.img.push(...imgs)
+    const respond = await camp.save()
+    return res.send(respond)
 
 })
 

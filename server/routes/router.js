@@ -2,10 +2,14 @@ const express = require('express');
 const route = express.Router();
 const passport = require('passport')
 
+const multer = require('multer')
+const { storage } = require('../cloudinary')
+const upload = multer({ storage })
+
 const services = require('../services/render')
 const controller = require('../controller/controller')
 const login = require('../controller/login')
-const { isLoggedIn,isAuthor,isReviewAuthor } = require('../../middleware')
+const { isLoggedIn, isAuthor, isReviewAuthor } = require('../../middleware')
 
 const { validateCampground, validateReview } = require('../error/validate')
 
@@ -25,19 +29,20 @@ route.get('/campgrounds', services.homeCampground)
  * @description find campground Route
  * @GET
  */
-route.get('/campgrounds/:id',  services.campground)
+route.get('/campgrounds/:id', services.campground)
 
 /**
  * @description New campground Route
  * @POST
  */
-route.post('/campgrounds/new', isLoggedIn, validateCampground, services.createCampground)
+
+route.post('/campgrounds/new', isLoggedIn, upload.array('campground[img]'),validateCampground ,services.createCampground)
 
 /**
  * @description update campground Route
  * @post
  */
-route.post('/campgrounds/:campid/edit', isLoggedIn, validateCampground, services.updateCampground)
+route.post('/campgrounds/:campid/edit', isLoggedIn, upload.array('campground[img]'),validateCampground, services.updateCampground)
 
 /**
  * @description delete campground Route
@@ -74,15 +79,15 @@ route.get('/login', services.loginEJSroute)
 route.post('/api/campgrounds', controller.createCampground)
 route.get('/api/campgrounds', controller.findCampground)
 route.get('/api/campgrounds/:id', controller.findCampgroundById)
-route.put('/api/campgrounds/:id', isAuthor ,controller.updateCampground)
-route.delete('/api/campgrounds/:id', isAuthor,controller.deleteCampground)
+route.put('/api/campgrounds/:id', isAuthor, controller.updateCampground)
+route.delete('/api/campgrounds/:id', isAuthor, controller.deleteCampground)
 route.post('/api/campgrounds/:id/reviews', controller.createReview)
-route.delete('/api/campgrounds/:campid/reviews/:reviewId', isReviewAuthor,controller.deleteReview)
+route.delete('/api/campgrounds/:campid/reviews/:reviewId', isReviewAuthor, controller.deleteReview)
 
 // login,logout and createUser routes
 route.post('/register', login.createUser)
-route.post('/login', passport.authenticate('local',{failureFlash: true,failureRedirect: '/login'}), login.loginUser)
-route.get('/logout',login.logoutUser)
+route.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), login.loginUser)
+route.get('/logout', login.logoutUser)
 
 
 
