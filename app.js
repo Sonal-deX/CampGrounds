@@ -6,9 +6,11 @@ const path = require('path')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-const expressError = require('./server/error/expressErrors')
 const passport = require('passport')
+const mongoSanitize = require('express-mongo-sanitize')
 const localStrategy = require('passport-local')
+
+const expressError = require('./server/error/expressErrors')
 const User = require('./server/model/user')
 const connectdb = require('./server/database/connection')
 
@@ -27,11 +29,15 @@ connectdb()
 
 // parse request to bodyParser
 app.use(bodyParser.urlencoded({ extended: true }))
+
 // method override
 app.use(methodOverride('_method'))
 
 // axios json request
 app.use(express.json())
+
+// mongo sanitize
+app.use(mongoSanitize())
 
 // set view engine
 app.set('view engine', 'ejs');
@@ -48,6 +54,7 @@ const sessionConfig = {
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        // secure: true, remove comment type when deploying
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }

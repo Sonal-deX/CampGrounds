@@ -5,6 +5,11 @@ exports.newEJSroute = (req, res) => {
     res.render('campground/new.ejs')
 }
 
+// home.ejs
+exports.home = (req, res) => {
+    res.render('home.ejs')
+}
+
 // Make a request to createAPI/campground
 exports.createCampground = (req, res) => {
     const newObj = req.body.campground

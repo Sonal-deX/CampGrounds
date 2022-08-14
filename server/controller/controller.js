@@ -2,6 +2,10 @@ const Campground = require('../model/campground')
 const Review = require('../model/review')
 const catchAsync = require('../error/catchAsync')
 
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mbToken = process.env.MAPBOX_TOKEN
+const geoCoder = mbxGeocoding({ accessToken: mbToken })
+
 // retrieve and return all users/ retrieve and return single user
 exports.findCampground = catchAsync(async (req, res) => {
     const campgrounds = await Campground.find()
@@ -11,7 +15,7 @@ exports.findCampground = catchAsync(async (req, res) => {
 
 exports.findCampgroundById = catchAsync(async (req, res) => {
     const id = req.params.id
-    Campground.findById(id).populate({path:'reviews',populate:{path:'author'}}).populate('author')
+    Campground.findById(id).populate({ path: 'reviews', populate: { path: 'author' } }).populate('author')
         .then((data) => {
             if (!data) {
                 res.status(404).send({ message: `Cannot found user with ${id}.Maybe user not found!` })
@@ -25,8 +29,16 @@ exports.findCampgroundById = catchAsync(async (req, res) => {
 })
 
 exports.createCampground = catchAsync(async (req, res) => {
+    const location = req.body.newObj.location
+    const state = req.body.newObj.state
+    const geoData = await geoCoder.forwardGeocode({
+        query:`${location}, ${state}`,
+        limit: 1
+    }).send()
+    console.log();
     const campground = new Campground(req.body.newObj)
-    campground.img = req.body.newArray.map(f => ({url:f.path , filename:f.filename}))
+    campground.geometry = geoData.body.features[0].geometry
+    campground.img = req.body.newArray.map(f => ({ url: f.path, filename: f.filename }))
     campground.author = req.body.reqUser._id
     const respond = await campground.save()
     console.log(campground);
@@ -36,7 +48,7 @@ exports.createCampground = catchAsync(async (req, res) => {
 exports.updateCampground = catchAsync(async (req, res) => {
     const id = req.params.id
     const camp = await Campground.findByIdAndUpdate(id, { ...req.body.updateObj })
-    const imgs = req.body.newArray.map(f => ({url:f.path , filename:f.filename}))
+    const imgs = req.body.newArray.map(f => ({ url: f.path, filename: f.filename }))
     camp.img.push(...imgs)
     const respond = await camp.save()
     return res.send(respond)

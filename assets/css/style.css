@@ -5,4 +5,17 @@
     border-radius: 50%;
   }
 
+  :root{
+    --h:60px;
+  }
+
+  .mapp{
+    width: auto;
+    height: var(--h);
+  }
+
+  #map{
+    border-radius: 7px;
+  }
+
 

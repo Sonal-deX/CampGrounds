@@ -2,8 +2,73 @@
 <%- include('../include/header.ejs') %>
     <!-- include header -->
     <link rel="stylesheet" href="/css/star.css">
+    <link rel="stylesheet" href="/css/style.css">
+    
 
+     
     <div class="mx-3  px-lg-4 px-xl-0 mx-xl-0 mx-xxl-5 px-xxl-5">
+        <% if(!currentUser){ %>
+            <div class="row">
+                <div class="col-12 col-md-6" id="card2">
+                    <div class="card mb-3 shadow-lg" > 
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <% for(let img of campground.img.reverse()){ %>
+                              <div class="carousel-item active">
+                                <img src="<%= img.url%>" class="d-block w-100" alt="">
+                              </div>
+                              <% } %> 
+                            </div>
+                            <% if(campground.img.length > 1){ %> 
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="visually-hidden">Next</span>
+                            </button>
+                            <% } %> 
+                          </div>                 
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= campground.title%>
+                            </h5>
+                            <p class="card-text">
+                                <%= campground.description%>
+                            </p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item text-muted">
+                                <%= campground.location%> , <%= campground.state %> 
+                            </li>
+                            <li class="list-group-item text-muted">
+                                <%= campground.author.username%>
+                            </li>
+                            <li class="list-group-item">$<%= campground.price%>/night</li>
+                        </ul>
+    
+                        <% if(currentUser && campground.author._id==currentUser._id) {%>
+                            <div class="card-body">
+                                <a class="card-link btn btn-info" href="/campgrounds/<%=campground._id%>/edit"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</a>
+                                <form class="d-inline" action="/campgrounds/<%=campground._id%>/delete" method="POST">
+                                    <button class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                            <% } %>
+                                <div class="card-footer text-muted">
+                                    2 days ago
+                                </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div>
+                        <div id='map' class="mapp" ></div>
+                    </div>
+                </div>
+            </div>
+            <% }else{ %>  
         <div class="row justify-content-center">
             <div class="col-12 col-md-6 px-xl-5">
                 <div class="card mb-3 shadow-lg"> 
@@ -36,7 +101,7 @@
                     </div>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item text-muted">
-                            <%= campground.location%>
+                            <%= campground.location%> , <%= campground.state %> 
                         </li>
                         <li class="list-group-item text-muted">
                             <%= campground.author.username%>
@@ -112,7 +177,50 @@
                         <% } %>
             </div>
         </div>
+        <div class="my-3">
+            <div id='map' style='width: auto; height: 400px;'></div>
+        </div>
+        <% } %>
     </div>
+
+    <script>
+        
+        let cU = <%- JSON.stringify(currentUser) || 10 %> ;
+
+        if(cU==10){
+            const card = document.getElementById('card2').offsetHeight;
+            let y = `${card-17}px` ;
+            document.documentElement.style.setProperty('--h', y);
+        }
+
+        
+        
+        const campground = <%-JSON.stringify(campground)%>;
+        mapboxgl.accessToken = 'pk.eyJ1IjoibGFzaW50aGEyMDAyIiwiYSI6ImNsNnEwdG5iNjBxMW4zamxlb2pxa3J1OHAifQ.B7uCpPyZHzg9AKFes7tJ7Q';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: campground.geometry.coordinates, // starting position [lng, lat]
+            zoom: 10, // starting zoom
+            projection: 'globe' // display the map as a 3D globe
+        });
+        map.on('style.load', () => {
+            map.setFog({}); // Set the default atmosphere style
+        });
+        new mapboxgl.Marker()
+            .setLngLat(campground.geometry.coordinates)
+            .addTo(map)
+            .setPopup(
+                new mapboxgl.Popup({offset:25})
+                .setHTML(
+                    `<h3>${campground.title}</h3><p>${campground.location +' , '+ campground.state}</p>`
+                )
+            )
+            map.addControl(new mapboxgl.NavigationControl())
+    </script>
+
+<%=  %>
+
 
     <!-- include update modal -->
     <%- include('edit.ejs') %>

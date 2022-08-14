@@ -14,6 +14,12 @@ const { isLoggedIn, isAuthor, isReviewAuthor } = require('../../middleware')
 const { validateCampground, validateReview } = require('../error/validate')
 
 /**
+ * @description home.ejs 
+ * @GET
+ */
+route.get('/',services.home)
+
+/**
  * @description new.ejs campground Route
  * @GET
  */

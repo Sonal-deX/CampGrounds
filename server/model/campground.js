@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Review = require('./review')
 
+const opts = { toJSON: { virtuals: true } };
+
 const campgroundSchema = new mongoose.Schema({
     title: {
         type: 'string',
@@ -8,10 +10,21 @@ const campgroundSchema = new mongoose.Schema({
     },
     img: [
         {
-            url:String,
-            filename:String
+            url: String,
+            filename: String
         }
     ],
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     price: {
         type: 'number',
         required: true
@@ -25,9 +38,9 @@ const campgroundSchema = new mongoose.Schema({
         type: 'string',
         required: true
     },
-    author:{
+    author: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'User'
+        ref: 'User'
     },
     reviews: [
         {
@@ -35,6 +48,13 @@ const campgroundSchema = new mongoose.Schema({
             ref: 'Review'
         }
     ]
+}, opts)
+
+campgroundSchema.virtual('properties.popUpMarkup').get(function () {
+    return `
+    <a href="/campgrounds/${this._id}" style="text-decoration: none; color:#51BBD6;">${this.title}</a><br>
+    <p style="font-size:13px; color:black;">${this.location}, ${this.state}</p>
+    `;
 })
 
 campgroundSchema.post('findOneAndDelete', async function (doc) {
