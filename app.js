@@ -20,8 +20,6 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
-const dbUrl = 'mongodb://localhost:27017/campSite'
-
 const PORT = process.env.PORT || 3000
 
 // log requests
