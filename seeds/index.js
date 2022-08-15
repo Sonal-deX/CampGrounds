@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
-mongoose.connect('mongodb://localhost:27017/campSite', {
+mongoose.connect('mongodb+srv://sonal2002:<password>@cluster0.xy0gjjg.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
