@@ -17,7 +17,7 @@ exports.createCampground = (req, res) => {
     const reqUser = req.user
     axios({
         method: 'post',
-        url: `http://localhost:8080/api/campgrounds`,
+        url: `${process.env.LINK}/api/campgrounds`,
         headers: {},
         data: {
             newObj,
@@ -37,7 +37,7 @@ exports.createCampground = (req, res) => {
 // Make a request to findAPI/campground
 exports.homeCampground = (req, res) => {
 
-    axios.get('http://localhost:8080/api/campgrounds')
+    axios.get(`${process.env.LINK}/api/campgrounds`)
         .then((response) => {
             res.render('campground/index', { campgrounds: response.data })
         })
@@ -49,7 +49,7 @@ exports.homeCampground = (req, res) => {
 
 // Make a request to find campground with id 
 exports.campground = (req, res) => {
-    axios.get(`http://localhost:8080/api/campgrounds/${req.params.id}`)
+    axios.get(`${process.env.LINK}/api/campgrounds/${req.params.id}`)
         .then((response) => {
             res.render('campground/show', { campground: response.data });
         })
@@ -68,7 +68,7 @@ exports.updateCampground = (req, res) => {
     delete updateObj.id
     axios({
         method: 'put',
-        url: `http://localhost:8080/api/campgrounds/${id}`,
+        url: `${process.env.LINK}/api/campgrounds/${id}`,
         headers: {},
         data: {
             updateObj,
@@ -97,7 +97,7 @@ exports.deleteCampground = (req, res) => {
     const reqUser = req.user
     axios({
         method: 'delete',
-        url: `http://localhost:8080/api/campgrounds/${id}`,
+        url: `${process.env.LINK}/api/campgrounds/${id}`,
         headers: {},
         data: {
             reqUser// This is the body part 
@@ -125,7 +125,7 @@ exports.createReview = (req, res) => {
     const reviewObj = req.body.review
     axios({
         method: 'post',
-        url: `http://localhost:8080/api/campgrounds/${id}/reviews`,
+        url: `${process.env.LINK}/api/campgrounds/${id}/reviews`,
         headers: {},
         data: {
             reviewObj,
@@ -146,7 +146,7 @@ exports.deleteReview = (req, res) => {
     const reqUser = req.user
     axios({
         method: 'delete',
-        url: `http://localhost:8080/api/campgrounds/${campid}/reviews/${reviewId}`,
+        url: `${process.env.LINK}/api/campgrounds/${campid}/reviews/${reviewId}`,
         headers: {},
         data: {
             reqUser// This is the body part 

@@ -51,7 +51,7 @@ app.use('/img', express.static(path.join(__dirname, 'assets/img')));
 // mongo store
 
 const store = MongoDBStore.create({
-    mongoUrl: dbUrl,
+    mongoUrl: process.env.MONGODB_URI,
     touchAfter: 24 * 60 * 60
 });
 
