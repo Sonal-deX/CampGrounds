@@ -50,12 +50,23 @@ const campgroundSchema = new mongoose.Schema({
     ]
 }, opts)
 
+
 campgroundSchema.virtual('properties.popUpMarkup').get(function () {
     return `
     <a href="/campgrounds/${this._id}" style="text-decoration: none; color:#51BBD6;">${this.title}</a><br>
     <p style="font-size:13px; color:black;">${this.location}, ${this.state}</p>
     `;
 })
+
+campgroundSchema.virtual('imgEdit').get(function () {
+    const x = this.img.length;
+    let y = []
+    this.img.forEach(function(img,i){
+        y.push(img.url.replace("/upload","/upload/w_200"))
+    })
+    return y;
+
+});
 
 campgroundSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {

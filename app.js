@@ -10,6 +10,8 @@ const passport = require('passport')
 const mongoSanitize = require('express-mongo-sanitize')
 const localStrategy = require('passport-local')
 
+const MongoDBStore = require('connect-mongo');
+
 const expressError = require('./server/error/expressErrors')
 const User = require('./server/model/user')
 const connectdb = require('./server/database/connection')
@@ -18,6 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
+const dbUrl = 'mongodb://localhost:27017/campSite'
 
 const PORT = process.env.PORT || 3000
 
@@ -47,9 +50,23 @@ app.use('/css', express.static(path.join(__dirname, 'assets/css')));
 app.use('/js', express.static(path.join(__dirname, 'assets/js')));
 app.use('/img', express.static(path.join(__dirname, 'assets/img')));
 
+// mongo store
+
+const store = MongoDBStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function (e) {
+    console.log("SESSION STORE ERROR", e)
+})
+
+const secret = process.env.SECRET || 'sonalAttanayake!'
+
 // session config
 const sessionConfig = {
-    secret: 'sonalAttanayake!',
+    store,
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {

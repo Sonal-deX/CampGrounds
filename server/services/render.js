@@ -73,7 +73,8 @@ exports.updateCampground = (req, res) => {
         data: {
             updateObj,
             newArray,
-            reqUser // This is the body part
+            reqUser,
+            delimg:req.body.deleteImages // This is the body part
         }
     })
         .then((response) => {

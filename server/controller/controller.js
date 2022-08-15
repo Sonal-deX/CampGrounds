@@ -3,6 +3,7 @@ const Review = require('../model/review')
 const catchAsync = require('../error/catchAsync')
 
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const { cloudinary } = require('../cloudinary');
 const mbToken = process.env.MAPBOX_TOKEN
 const geoCoder = mbxGeocoding({ accessToken: mbToken })
 
@@ -32,7 +33,7 @@ exports.createCampground = catchAsync(async (req, res) => {
     const location = req.body.newObj.location
     const state = req.body.newObj.state
     const geoData = await geoCoder.forwardGeocode({
-        query:`${location}, ${state}`,
+        query: `${location}, ${state}`,
         limit: 1
     }).send()
     console.log();
@@ -51,6 +52,14 @@ exports.updateCampground = catchAsync(async (req, res) => {
     const imgs = req.body.newArray.map(f => ({ url: f.path, filename: f.filename }))
     camp.img.push(...imgs)
     const respond = await camp.save()
+    if (req.body.delimg) {
+        for (let filename of req.body.delimg) {
+            await cloudinary.uploader.destroy(filename)
+        }
+    }
+    if (req.body.delimg) {
+        await camp.updateOne({ $pull: { img: { filename: { $in: req.body.delimg } } } })
+    }
     return res.send(respond)
 
 })
