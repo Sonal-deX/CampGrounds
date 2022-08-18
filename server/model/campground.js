@@ -59,14 +59,36 @@ campgroundSchema.virtual('properties.popUpMarkup').get(function () {
 })
 
 campgroundSchema.virtual('imgEdit').get(function () {
-    const x = this.img.length;
     let y = []
     this.img.forEach(function(img,i){
         y.push(img.url.replace("/upload","/upload/w_200"))
     })
     return y;
-
 });
+
+campgroundSchema.virtual('imgFile').get(function () {
+    let y = []
+    this.img.forEach(function(img,i){
+        y.push(img.filename)
+    })
+    return y;
+});
+
+campgroundSchema.virtual('imgTrans').get(function () {
+    let y = []
+    this.img.forEach(function(img,i){
+        y.push(img.url.replace("/upload","/upload/q_100/h_200,w_220"))
+    })
+    return y;
+})
+
+campgroundSchema.virtual('imgMain').get(function () {
+    let y = []
+    this.img.forEach(function(img,i){
+        y.push(img.url.replace("/upload","/upload/q_100/h_170,w_220"))
+    })
+    return y;
+})
 
 campgroundSchema.post('findOneAndDelete', async function (doc) {
     if (doc) {

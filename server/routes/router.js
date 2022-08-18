@@ -5,11 +5,12 @@ const passport = require('passport')
 const multer = require('multer')
 const { storage } = require('../cloudinary')
 const upload = multer({ storage })
+const { cloudinary } = require('../cloudinary');
 
 const services = require('../services/render')
 const controller = require('../controller/controller')
 const login = require('../controller/login')
-const { isLoggedIn, isAuthor, isReviewAuthor } = require('../../middleware')
+const { isLoggedIn, isAuthor, isReviewAuthor,imgCheckAtCreate,imgCheckAtUpdate } = require('../../middleware')
 
 const { validateCampground, validateReview } = require('../error/validate')
 
@@ -42,13 +43,13 @@ route.get('/campgrounds/:id', services.campground)
  * @POST
  */
 
-route.post('/campgrounds/new', isLoggedIn, upload.array('campground[img]'),validateCampground ,services.createCampground)
+route.post('/campgrounds/new', isLoggedIn, upload.array('campground[img]'),imgCheckAtCreate,validateCampground ,services.createCampground)
 
 /**
  * @description update campground Route
  * @post
  */
-route.post('/campgrounds/:campid/edit', isLoggedIn, upload.array('campground[img]'),validateCampground, services.updateCampground)
+route.post('/campgrounds/:campid/edit', isLoggedIn, upload.array('campground[img]'),imgCheckAtUpdate,validateCampground, services.updateCampground)
 
 /**
  * @description delete campground Route

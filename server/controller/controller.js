@@ -36,13 +36,11 @@ exports.createCampground = catchAsync(async (req, res) => {
         query: `${location}, ${state}`,
         limit: 1
     }).send()
-    console.log();
     const campground = new Campground(req.body.newObj)
     campground.geometry = geoData.body.features[0].geometry
     campground.img = req.body.newArray.map(f => ({ url: f.path, filename: f.filename }))
     campground.author = req.body.reqUser._id
     const respond = await campground.save()
-    console.log(campground);
     res.send(respond)
 })
 
@@ -53,11 +51,9 @@ exports.updateCampground = catchAsync(async (req, res) => {
     camp.img.push(...imgs)
     const respond = await camp.save()
     if (req.body.delimg) {
-        for (let filename of req.body.delimg) {
-            await cloudinary.uploader.destroy(filename)
+        for (let url of req.body.delimg) {
+            await cloudinary.uploader.destroy(url)
         }
-    }
-    if (req.body.delimg) {
         await camp.updateOne({ $pull: { img: { filename: { $in: req.body.delimg } } } })
     }
     return res.send(respond)
@@ -66,6 +62,12 @@ exports.updateCampground = catchAsync(async (req, res) => {
 
 exports.deleteCampground = catchAsync(async (req, res) => {
     const id = req.params.id
+    const camp = await Campground.findById(id)
+    if(camp.img){
+        for(let img of camp.img){
+            await cloudinary.uploader.destroy(img.filename)
+        }
+    }
     const respond = await Campground.findByIdAndDelete(id)
     return res.send(respond)
 })

@@ -30,7 +30,7 @@ exports.createCampground = (req, res) => {
             res.redirect(`/campgrounds/${response.data._id}`);
         })
         .catch((err) => {
-            console.log(err);
+            res.status(err.response.status).render('error', { err: err.response.statusText, errCode: err.response.status })
         })
 }
 
@@ -52,6 +52,7 @@ exports.campground = (req, res) => {
     axios.get(`${process.env.LINK}/api/campgrounds/${req.params.id}`)
         .then((response) => {
             res.render('campground/show', { campground: response.data });
+            // console.log(response.data.img);
         })
         .catch((err) => {
             res.status(err.response.status).render('error', { err: err.response.statusText, errCode: err.response.status })

@@ -6,13 +6,9 @@
   }
 
   :root{
-    --h:300px;
+    --h:785px;
   }
 
-  .mapp{
-    width: auto;
-    height: var(--h);
-  }
 
   #map{
     border-radius: 7px;

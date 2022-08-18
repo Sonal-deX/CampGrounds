@@ -6,7 +6,7 @@ const dotenv = require('dotenv')
 
 dotenv.config()
 
-mongoose.connect('mongodb+srv://sonal2002:<password>@cluster0.xy0gjjg.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://sonal2002:Lasintha2002@cluster0.xy0gjjg.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -24,7 +24,7 @@ const seeddb = async () => {
         const random1000 = Math.floor(Math.random() * 1000)
         const price = Math.floor(Math.random() * 20) + 10
         const camp = new Campground({
-            author: '62ca61ae32b80407a4eb10f5',
+            author: '62fa9dfe0f55b799d1b7b92f',
             location: `${cities[random1000].city}`,
             geometry:{
                 type: 'Point',
@@ -36,8 +36,8 @@ const seeddb = async () => {
             price,
             img: [
                 {
-                    url: 'https://res.cloudinary.com/dujxnzkly/image/upload/v1660149753/YelpCamp/or6qje13uhofbcxlzyjp.jpg',
-                    filename: 'YelpCamp/or6qje13uhofbcxlzyjp',
+                    url: 'https://res.cloudinary.com/dujxnzkly/image/upload/v1660809854/YelpCamp/n2nnqf1iy0ghl2tccoed.jpg',
+                    filename: 'YelpCamp/n2nnqf1iy0ghl2tccoed',
                 }
             ]
         })

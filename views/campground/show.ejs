@@ -12,9 +12,9 @@
                 <div class="card mb-3 shadow-lg" id="card"> 
                     <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
-                            <% for(let img of campground.img.reverse()){ %>
+                            <% for(let img of campground.imgTrans.reverse()){ %>
                           <div class="carousel-item active">
-                            <img src="<%= img.url%>" class="d-block w-100" alt="">
+                            <img src="<%= img %>" class="d-block w-100" alt="">
                           </div>
                           <% } %> 
                         </div>
@@ -131,7 +131,7 @@
     </div>
 
     <script>
-       
+
        let rev = <%- JSON.stringify(campground) || 10 %> ;
        if(rev.reviews.length>0){
         let cU = <%- JSON.stringify(currentUser) || 10 %> ;
@@ -139,7 +139,6 @@
             const card = document.getElementById('card').offsetHeight;
             const scrollDiv = document.getElementById('scrollDiv').offsetHeight;
             let y1 = card - scrollDiv 
-            console.log(scrollDiv);
             let y2 = `${scrollDiv + y1 - 2}px` ;
             document.documentElement.style.setProperty('--h', y2);
         }else{
@@ -176,8 +175,6 @@
             )
             map.addControl(new mapboxgl.NavigationControl())
     </script>
-
-<%=  %>
 
 
     <!-- include update modal -->
